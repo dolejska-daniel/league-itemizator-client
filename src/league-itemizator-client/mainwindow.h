@@ -37,6 +37,7 @@ public:
      */
     void GetCurrentAppVersion();
 
+
 public slots:
     //======================================================================dd==
     //  SLOTS
