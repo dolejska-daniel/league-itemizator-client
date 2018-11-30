@@ -16,7 +16,7 @@ MainWindow::MainWindow(QWidget *parent) :
     settings(new QSettings("dolejska-daniel", "League Itemizator")),
     ui(new Ui::MainWindow),
     _aboutDialog(new AboutDialog(this)),
-    _settingsDialog(new SettingsDialog(this))
+    _settingsDialog(new SettingsDialog(settings, this))
 {
     ui->setupUi(this);
 
