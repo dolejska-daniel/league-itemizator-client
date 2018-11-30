@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>231</width>
-    <height>272</height>
+    <height>305</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -19,7 +19,7 @@
   <property name="maximumSize">
    <size>
     <width>231</width>
-    <height>272</height>
+    <height>310</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -27,12 +27,15 @@
   </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QGroupBox" name="groupBox_Data">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>10</x>
       <y>10</y>
       <width>211</width>
-      <height>101</height>
+      <height>121</height>
      </rect>
     </property>
     <property name="sizePolicy">
@@ -45,23 +48,32 @@
      <string>Item sets</string>
     </property>
     <widget class="QWidget" name="formLayoutWidget">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
      <property name="geometry">
       <rect>
        <x>10</x>
        <y>20</y>
        <width>191</width>
-       <height>72</height>
+       <height>107</height>
       </rect>
      </property>
      <layout class="QFormLayout" name="formLayout">
       <property name="horizontalSpacing">
        <number>12</number>
       </property>
+      <property name="topMargin">
+       <number>6</number>
+      </property>
       <property name="rightMargin">
        <number>0</number>
       </property>
       <item row="2" column="0">
        <widget class="QLabel" name="label">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
         <property name="text">
          <string>Version</string>
         </property>
@@ -69,6 +81,9 @@
       </item>
       <item row="2" column="1">
        <widget class="QLabel" name="label_data_version">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
         <property name="text">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#555555;&quot;&gt;Unknown&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
@@ -76,6 +91,9 @@
       </item>
       <item row="0" column="0">
        <widget class="QLabel" name="label_3">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
         <property name="text">
          <string>Up-to-date</string>
         </property>
@@ -83,6 +101,9 @@
       </item>
       <item row="0" column="1">
        <widget class="QLabel" name="label_data_upToDate">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
         <property name="text">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#ff0000;&quot;&gt;NO&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
@@ -90,6 +111,9 @@
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="label_5">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
         <property name="text">
          <string>Last update</string>
         </property>
@@ -97,6 +121,9 @@
       </item>
       <item row="1" column="1">
        <widget class="QLabel" name="label_data_lastUpdate">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
         <property name="text">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#555555;&quot;&gt;Unknown&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
@@ -104,6 +131,9 @@
       </item>
       <item row="3" column="0">
        <widget class="QLabel" name="label_13">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
         <property name="text">
          <string>Latest verison</string>
         </property>
@@ -111,6 +141,9 @@
       </item>
       <item row="3" column="1">
        <widget class="QLabel" name="label_data_versionLatest">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
         <property name="text">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#555555;&quot;&gt;Unknown&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
@@ -120,12 +153,15 @@
     </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox_App">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>120</y>
+      <y>140</y>
       <width>211</width>
-      <height>101</height>
+      <height>121</height>
      </rect>
     </property>
     <property name="sizePolicy">
@@ -138,23 +174,32 @@
      <string>Application</string>
     </property>
     <widget class="QWidget" name="formLayoutWidget_2">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
      <property name="geometry">
       <rect>
        <x>10</x>
        <y>20</y>
        <width>191</width>
-       <height>72</height>
+       <height>93</height>
       </rect>
      </property>
      <layout class="QFormLayout" name="formLayout_2">
       <property name="horizontalSpacing">
        <number>12</number>
       </property>
+      <property name="topMargin">
+       <number>6</number>
+      </property>
       <property name="rightMargin">
        <number>0</number>
       </property>
       <item row="2" column="0">
        <widget class="QLabel" name="label_7">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
         <property name="text">
          <string>Version</string>
         </property>
@@ -162,6 +207,9 @@
       </item>
       <item row="2" column="1">
        <widget class="QLabel" name="label_app_version">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
         <property name="text">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#555555;&quot;&gt;Unknown&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
@@ -169,6 +217,9 @@
       </item>
       <item row="0" column="0">
        <widget class="QLabel" name="label_9">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
         <property name="text">
          <string>Up-to-date</string>
         </property>
@@ -176,6 +227,9 @@
       </item>
       <item row="0" column="1">
        <widget class="QLabel" name="label_app_upToDate">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
         <property name="text">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#ff0000;&quot;&gt;NO&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
@@ -183,6 +237,9 @@
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="label_11">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
         <property name="text">
          <string>Last update</string>
         </property>
@@ -190,6 +247,9 @@
       </item>
       <item row="1" column="1">
        <widget class="QLabel" name="label_app_lastUpdate">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
         <property name="text">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#555555;&quot;&gt;Unknown&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
@@ -197,6 +257,9 @@
       </item>
       <item row="3" column="0">
        <widget class="QLabel" name="label_15">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
         <property name="text">
          <string>Latest verison</string>
         </property>
@@ -204,6 +267,9 @@
       </item>
       <item row="3" column="1">
        <widget class="QLabel" name="label_app_versionLatest">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
         <property name="text">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#555555;&quot;&gt;Unknown&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
@@ -219,7 +285,7 @@
      <x>0</x>
      <y>0</y>
      <width>231</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuAbout">
