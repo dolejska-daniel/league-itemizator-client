@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 #include "aboutdialog.h"
 #include "settingsdialog.h"
+#include "dataapi.h"
 
 #include <QMainWindow>
 #include <QSettings>
@@ -16,19 +17,49 @@ class MainWindow : public QMainWindow
 
 public:
     QSettings *settings;
+    DataApi *api;
 
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
 
-//======================================================================dd==
-//  SLOTS
-//======================================================================dd==
+    //======================================================================dd==
+    //  CONTROL FUNCTIONS
+    //======================================================================dd==
+
+    /**
+     * @brief GetCurrentDataVersion
+     */
+    void GetCurrentDataVersion();
+
+    /**
+     * @brief GetCurrentAppVersion
+     */
+    void GetCurrentAppVersion();
+
 public slots:
+    //======================================================================dd==
+    //  SLOTS
+    //======================================================================dd==
+
+    /**
+     * @brief AutoUpdateData
+     * @param value Is enabled?
+     */
     void AutoUpdateData(bool value);
+    /**
+     * @brief UpdateData
+     */
     void UpdateData();
 
+    /**
+     * @brief AutoUpdateClient
+     * @param value Is enabled?
+     */
     void AutoUpdateClient(bool value);
+    /**
+     * @brief UpdateClient
+     */
     void UpdateClient();
 
 private:

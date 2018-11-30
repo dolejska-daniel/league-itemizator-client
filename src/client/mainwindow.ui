@@ -6,19 +6,19 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>231</width>
+    <width>250</width>
     <height>305</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>231</width>
+    <width>250</width>
     <height>272</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>231</width>
+    <width>250</width>
     <height>310</height>
    </size>
   </property>
@@ -34,7 +34,7 @@
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>211</width>
+      <width>231</width>
       <height>121</height>
      </rect>
     </property>
@@ -55,8 +55,8 @@
       <rect>
        <x>10</x>
        <y>20</y>
-       <width>191</width>
-       <height>107</height>
+       <width>211</width>
+       <height>101</height>
       </rect>
      </property>
      <layout class="QFormLayout" name="formLayout">
@@ -125,7 +125,7 @@
          <bool>true</bool>
         </property>
         <property name="text">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#555555;&quot;&gt;Unknown&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#555555;&quot;&gt;Never&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
       </item>
@@ -160,7 +160,7 @@
      <rect>
       <x>10</x>
       <y>140</y>
-      <width>211</width>
+      <width>231</width>
       <height>121</height>
      </rect>
     </property>
@@ -181,8 +181,8 @@
       <rect>
        <x>10</x>
        <y>20</y>
-       <width>191</width>
-       <height>93</height>
+       <width>211</width>
+       <height>101</height>
       </rect>
      </property>
      <layout class="QFormLayout" name="formLayout_2">
@@ -251,7 +251,7 @@
          <bool>true</bool>
         </property>
         <property name="text">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#555555;&quot;&gt;Unknown&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#555555;&quot;&gt;Never&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
       </item>
@@ -284,7 +284,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>231</width>
+     <width>250</width>
      <height>22</height>
     </rect>
    </property>

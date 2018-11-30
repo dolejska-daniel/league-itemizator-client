@@ -14,6 +14,7 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     settings(new QSettings("dolejska-daniel", "League Itemizator")),
+    api(new DataApi()),
     ui(new Ui::MainWindow),
     _aboutDialog(new AboutDialog(this)),
     _settingsDialog(new SettingsDialog(settings, this))
@@ -21,8 +22,22 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     //  Change UI states according to saved settings
-    ui->actionAutoUpdate_data->setChecked(settings->value("auto-updates/data", false).toBool());
-    ui->actionAutoUpdate_client->setChecked(settings->value("auto-updates/client", false).toBool());
+    ui->actionAutoUpdate_data->setChecked(settings->value("data/auto-updates", false).toBool());
+    ui->actionAutoUpdate_client->setChecked(settings->value("app/auto-updates", false).toBool());
+
+    auto data_lastUpdate = settings->value("data/updated_at").toString();
+    if (data_lastUpdate.length())
+    {
+        ui->label_data_lastUpdate->setText(data_lastUpdate);
+        ui->label_data_version->setText(settings->value("data/version").toString());
+    }
+
+    auto app_lastUpdate = settings->value("app/updated_at").toString();
+    if (app_lastUpdate.length())
+    {
+        ui->label_app_lastUpdate->setText(app_lastUpdate);
+        ui->label_app_version->setText(settings->value("app/version").toString());
+    }
 
     //  Connecting signals with slots
     connect(ui->actionAutoUpdate_data, SIGNAL(toggled(bool)), this, SLOT(AutoUpdateData(bool)));
@@ -74,25 +89,44 @@ MainWindow::~MainWindow()
 
 
 //======================================================================dd==
+//  CONTROL FUNCTIONS
+//======================================================================dd==
+
+void MainWindow::GetCurrentDataVersion()
+{
+    auto version = api->GetCurrentDataVersion();
+    ui->label_data_versionLatest->setText(version);
+    //  TODO: Validate whether is up-to-date or not
+}
+
+void MainWindow::GetCurrentAppVersion()
+{
+    auto version = api->GetCurrentProgramVersion();
+    ui->label_app_versionLatest->setText(version);
+    //  TODO: Validate whether is up-to-date or not
+}
+
+
+//======================================================================dd==
 //  SLOTS
 //======================================================================dd==
 
 void MainWindow::AutoUpdateData(bool value)
 {
-
+    settings->setValue("data/auto-updates", value);
 }
 
 void MainWindow::UpdateData()
 {
-
+    //  TODO: api->GetCurrentData...?
 }
 
 void MainWindow::AutoUpdateClient(bool value)
 {
-
+    settings->setValue("app/auto-updates", value);
 }
 
 void MainWindow::UpdateClient()
 {
-
+    //  TODO: api->GetCurrentApp...?
 }
