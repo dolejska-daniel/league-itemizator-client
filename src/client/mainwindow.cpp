@@ -1,3 +1,5 @@
+#include "aboutdialog.h"
+#include "settingsdialog.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -6,18 +8,31 @@
 #include <QFileDialog>
 #include <QDir>
 #include <QSysInfo>
+#include <QAction>
 
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     settings(new QSettings("dolejska-daniel", "League Itemizator")),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    _aboutDialog(new AboutDialog(this)),
+    _settingsDialog(new SettingsDialog(this))
 {
     ui->setupUi(this);
 
     //  Change UI states according to saved settings
     ui->actionAutoUpdate_data->setChecked(settings->value("auto-updates/data", false).toBool());
     ui->actionAutoUpdate_client->setChecked(settings->value("auto-updates/client", false).toBool());
+
+    //  Connecting signals with slots
+    connect(ui->actionAutoUpdate_data, SIGNAL(toggled(bool)), this, SLOT(AutoUpdateData(bool)));
+    connect(ui->actionUpdate_data, SIGNAL(triggered()), this, SLOT(UpdateData()));
+
+    connect(ui->actionAutoUpdate_client, SIGNAL(toggled(bool)), this, SLOT(AutoUpdateClient(bool)));
+    connect(ui->actionUpdate_client, SIGNAL(triggered()), this, SLOT(UpdateClient()));
+
+    connect(ui->actionSettings, SIGNAL(triggered()), _settingsDialog, SLOT(show()));
+    connect(ui->actionAboutApplication, SIGNAL(triggered()), _aboutDialog, SLOT(show()));
 
     this->show();
 
@@ -55,4 +70,29 @@ MainWindow::~MainWindow()
 {
     delete settings;
     delete ui;
+}
+
+
+//======================================================================dd==
+//  SLOTS
+//======================================================================dd==
+
+void MainWindow::AutoUpdateData(bool value)
+{
+
+}
+
+void MainWindow::UpdateData()
+{
+
+}
+
+void MainWindow::AutoUpdateClient(bool value)
+{
+
+}
+
+void MainWindow::UpdateClient()
+{
+
 }

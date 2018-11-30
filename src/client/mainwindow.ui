@@ -292,6 +292,7 @@
     <property name="title">
      <string>About</string>
     </property>
+    <addaction name="actionAboutApplication"/>
    </widget>
    <widget class="QMenu" name="menuUpdate">
     <property name="title">
@@ -352,10 +353,15 @@
   </action>
   <action name="actionSettings">
    <property name="enabled">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="text">
     <string>Settings</string>
+   </property>
+  </action>
+  <action name="actionAboutApplication">
+   <property name="text">
+    <string>Application</string>
    </property>
   </action>
  </widget>
