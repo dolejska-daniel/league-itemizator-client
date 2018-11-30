@@ -42,12 +42,16 @@ QString DataApi::GetCurrentProgramVersion()
 
 QNetworkRequest DataApi::CreateRequest(QString endpoint, std::map<QString, QString> params)
 {
-    auto request = QNetworkRequest();
-    endpoint+= "?";
+    auto url = QUrl();
+    url.setUrl(_baseUrl);
+    url.setPath(endpoint);
+
+    auto urlQuery = QUrlQuery();
     for (auto param: params)
-        endpoint+= param.first + "=" + param.second;
-    request.setUrl(_baseUrl + endpoint);
-    //request.setAttribute("", "");
+        urlQuery.addQueryItem(param.first, param.second);
+    url.setQuery(urlQuery);
+
+    auto request = QNetworkRequest(url);
     return request;
 }
 
