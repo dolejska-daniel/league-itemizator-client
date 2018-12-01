@@ -3,7 +3,6 @@
 #include <map>
 #include <QtNetwork>
 
-
 class DataApi
 {
 public:
@@ -21,13 +20,13 @@ public:
      * @brief GetCurrentDataVersion
      * @return current data version
      */
-    QString GetCurrentDataVersion();
+    QPair<int, QString> GetCurrentDataVersion();
 
     /**
      * @brief GetCurrentProgramVersion
      * @return current program version
      */
-    QString GetCurrentProgramVersion();
+    QPair<int, QString> GetCurrentProgramVersion();
 
 
     //======================================================================dd==
@@ -36,7 +35,7 @@ public:
 
 
 protected:
-    const QString _baseUrl = "https://qwer.qwer/qwer";
+    const QString _baseUrl = "http://dev.itemizator.deploy.dolejska.me";
 
     QNetworkAccessManager *_nam;
 

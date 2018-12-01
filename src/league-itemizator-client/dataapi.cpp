@@ -17,16 +17,22 @@ DataApi::~DataApi()
 //  VERSION ENDPOINT
 //======================================================================dd==
 
-QString DataApi::GetCurrentDataVersion()
+QPair<int, QString> DataApi::GetCurrentDataVersion()
 {
-    auto data = MakeCall(CreateRequest("/version/data"));
-    return data["data"].toString();
+    auto data = MakeCall(CreateRequest("/src/league-itemizator-server/index.php", {{"f", "getDataVersion"}}));
+    return {
+        data["version"].toInt(),
+        data["version_string"].toString(),
+    };
 }
 
-QString DataApi::GetCurrentProgramVersion()
+QPair<int, QString> DataApi::GetCurrentProgramVersion()
 {
-    auto data = MakeCall(CreateRequest("/version/program"));
-    return data["data"].toString();
+    auto data = MakeCall(CreateRequest("/src/league-itemizator-server/index.php", {{"f", "getAppVersion"}}));
+    return {
+        data["version"].toInt(),
+        data["version_string"].toString(),
+    };
 }
 
 

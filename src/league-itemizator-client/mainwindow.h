@@ -7,6 +7,10 @@
 #include <QMainWindow>
 #include <QSettings>
 
+extern const int APP_VERSION;
+extern const QString APP_VERSION_STRING;
+
+
 namespace Ui {
 class MainWindow;
 }
@@ -18,6 +22,9 @@ class MainWindow : public QMainWindow
 public:
     QSettings *settings;
     DataApi *api;
+
+    QString yesText = "<html><head/><body><p><span style=\" font-weight:600; color:#4e9a06;\">YES</span></p></body></html>";
+    QString noText = "<html><head/><body><p><span style=\" font-weight:600; color:#ff0000;\">NO</span></p></body></html>";
 
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
