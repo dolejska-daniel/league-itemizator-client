@@ -33,6 +33,13 @@ public:
     //  DATA ENDPOINT
     //======================================================================dd==
 
+    /**
+     * @brief GetFile
+     * @param name
+     * @return file data
+     */
+    QByteArray GetFile(QString name);
+
 
 protected:
     const QString _baseUrl = "http://dev.itemizator.deploy.dolejska.me";

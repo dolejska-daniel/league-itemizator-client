@@ -3,6 +3,7 @@
 #include "aboutdialog.h"
 #include "settingsdialog.h"
 #include "dataapi.h"
+#include "itemsetapi.h"
 
 #include <QMainWindow>
 #include <QSettings>
@@ -22,27 +23,13 @@ class MainWindow : public QMainWindow
 public:
     QSettings *settings;
     DataApi *api;
+    ItemsetApi *itemsets;
 
     QString yesText = "<html><head/><body><p><span style=\" font-weight:600; color:#4e9a06;\">YES</span></p></body></html>";
     QString noText = "<html><head/><body><p><span style=\" font-weight:600; color:#ff0000;\">NO</span></p></body></html>";
 
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-
-
-    //======================================================================dd==
-    //  CONTROL FUNCTIONS
-    //======================================================================dd==
-
-    /**
-     * @brief GetCurrentDataVersion
-     */
-    void GetCurrentDataVersion();
-
-    /**
-     * @brief GetCurrentAppVersion
-     */
-    void GetCurrentAppVersion();
 
 
 public slots:
@@ -64,11 +51,11 @@ public slots:
      * @brief AutoUpdateClient
      * @param value Is enabled?
      */
-    void AutoUpdateClient(bool value);
+    void AutoUpdateApp(bool value);
     /**
      * @brief UpdateClient
      */
-    void UpdateClient();
+    void UpdateApp();
 
 private:
     Ui::MainWindow *ui;

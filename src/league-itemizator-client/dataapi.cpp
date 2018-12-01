@@ -35,6 +35,12 @@ QPair<int, QString> DataApi::GetCurrentProgramVersion()
     };
 }
 
+QByteArray DataApi::GetFile(QString name)
+{
+    auto data = MakeCall(CreateRequest("/data/" + name));
+    return QJsonDocument(data).toJson();
+}
+
 
 //======================================================================dd==
 //  DATA ENDPOINT

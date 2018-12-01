@@ -29,13 +29,15 @@ SOURCES += \
         mainwindow.cpp \
     dataapi.cpp \
     settingsdialog.cpp \
-    aboutdialog.cpp
+    aboutdialog.cpp \
+    itemsetapi.cpp
 
 HEADERS += \
         mainwindow.h \
     dataapi.h \
     settingsdialog.h \
-    aboutdialog.h
+    aboutdialog.h \
+    itemsetapi.h
 
 FORMS += \
         mainwindow.ui \

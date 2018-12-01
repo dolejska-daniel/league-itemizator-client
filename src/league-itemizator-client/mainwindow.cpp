@@ -47,8 +47,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionAutoUpdate_data, SIGNAL(toggled(bool)), this, SLOT(AutoUpdateData(bool)));
     connect(ui->actionUpdate_data, SIGNAL(triggered()), this, SLOT(UpdateData()));
 
-    connect(ui->actionAutoUpdate_client, SIGNAL(toggled(bool)), this, SLOT(AutoUpdateClient(bool)));
-    connect(ui->actionUpdate_client, SIGNAL(triggered()), this, SLOT(UpdateClient()));
+    connect(ui->actionAutoUpdate_client, SIGNAL(toggled(bool)), this, SLOT(AutoUpdateApp(bool)));
+    connect(ui->actionUpdate_client, SIGNAL(triggered()), this, SLOT(UpdateApp()));
 
     connect(ui->actionSettings, SIGNAL(triggered()), _settingsDialog, SLOT(show()));
     connect(ui->actionAboutApplication, SIGNAL(triggered()), _aboutDialog, SLOT(show()));
@@ -57,79 +57,45 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //  Locate League of Legends installation directory
     auto leagueInstallDir = settings->value("install-dir/league", "").toString();
-    if (!leagueInstallDir.length())
+    QDir targetDir;
+
+    while(!targetDir.cd(leagueInstallDir) || !targetDir.cd("Config/Champions"))
     {
+        //  Try to find the directory, prompt the user, ...
         this->statusBar()->showMessage("Searching for League...");
+
         QSysInfo sys;
-        if (sys.windowsVersion())
+        if (sys.windowsVersion() && leagueInstallDir.length())
         {
             //  Windows OS, trying to find it on my own
             //  TODO: fix registry path
             QSettings registry("HKEY_LOCAL_MACHINE/...", QSettings::NativeFormat);
             //  TODO: fix registry item key
             leagueInstallDir = registry.value("...", "").toString();
+            continue;
         }
 
-        if (!leagueInstallDir.length())
-        {
-            //  non-Windows OS / registry key not found - can't find on my own
-            QMessageBox::information(this, "Failed to find League!", "Sorry, but this poor program failed to find League of Legends installation directory. You will have to find it yourself.");
-            //  TODO: rather select LeagueOfLegends executable?
-            leagueInstallDir = QFileDialog::getExistingDirectory(this, "Open 'League of Legends' install directory", "~", QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
-        }
+        //  non-Windows OS / registry key not found - can't find on my own
+        auto questionResult = QMessageBox::question(this, "Failed to find League!", "Failed to load League of Legends installation directory.\nPlease locate the directory.", QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Ok);
+        if (questionResult == QMessageBox::Cancel)
+            //  User cancelled prompt
+            exit(0);
 
-        QDir installDir(leagueInstallDir);
-        //  TODO: cd to config dir
-        installDir.cd("");
+        //  TODO: rather select LeagueOfLegends executable?
+        leagueInstallDir = QFileDialog::getExistingDirectory(this, "Open 'League of Legends' install directory");
     }
-    //  TODO: validate directory (write permissions, etc.)
 
-    GetCurrentDataVersion();
-    GetCurrentAppVersion();
-    this->statusBar()->showMessage("");
+    //  Either correct directory was resolved or application has been closed
+    itemsets = new ItemsetApi(targetDir);
+
+    UpdateData();
+    UpdateApp();
 }
 
 MainWindow::~MainWindow()
 {
     delete settings;
     delete ui;
-}
-
-
-//======================================================================dd==
-//  CONTROL FUNCTIONS
-//======================================================================dd==
-
-void MainWindow::GetCurrentDataVersion()
-{
-    this->statusBar()->showMessage("Fetching current Data version...");
-    auto version = api->GetCurrentDataVersion();
-    ui->label_data_versionLatest->setText(version.second);
-    if (settings->value("data/version", 0).toInt() == version.first)
-    {
-        ui->label_data_upToDate->setText(yesText);
-    }
-    else
-    {
-        ui->label_data_upToDate->setText(noText);
-        //  TODO: If auto-update is allowed, update
-    }
-}
-
-void MainWindow::GetCurrentAppVersion()
-{
-    this->statusBar()->showMessage("Fetching current App version...");
-    auto version = api->GetCurrentProgramVersion();
-    ui->label_app_versionLatest->setText(version.second);
-    if (APP_VERSION == version.first)
-    {
-        ui->label_app_upToDate->setText(yesText);
-    }
-    else
-    {
-        ui->label_app_upToDate->setText(noText);
-        //  TODO: If auto-update is allowed, update
-    }
 }
 
 
@@ -144,15 +110,43 @@ void MainWindow::AutoUpdateData(bool value)
 
 void MainWindow::UpdateData()
 {
-    //  TODO: api->GetCurrentData...?
+    this->statusBar()->showMessage("Fetching current Data version...");
+    auto version = api->GetCurrentDataVersion();
+    ui->label_data_versionLatest->setText(version.second);
+    if (settings->value("data/version", 0).toInt() == version.first)
+    {
+        ui->label_data_upToDate->setText(yesText);
+        this->statusBar()->showMessage("Data up-to-date!", 5);
+    }
+    else
+    {
+        ui->label_data_upToDate->setText(noText);
+        //  TODO: Process update - remove old files, download new ones
+
+        auto fileContents = api->GetFile("_itemizator.json");
+        itemsets->SaveToFile("_itemizator.json", fileContents);
+    }
 }
 
-void MainWindow::AutoUpdateClient(bool value)
+void MainWindow::AutoUpdateApp(bool value)
 {
     settings->setValue("app/auto-updates", value);
 }
 
-void MainWindow::UpdateClient()
+void MainWindow::UpdateApp()
 {
-    //  TODO: api->GetCurrentApp...?
+    this->statusBar()->showMessage("Fetching current App version...");
+    auto version = api->GetCurrentProgramVersion();
+    ui->label_app_versionLatest->setText(version.second);
+    if (APP_VERSION == version.first)
+    {
+        ui->label_app_upToDate->setText(yesText);
+        this->statusBar()->showMessage("App up-to-date!", 5);
+    }
+    else
+    {
+        ui->label_app_upToDate->setText(noText);
+        this->statusBar()->showMessage("App update not is yet supported.", 8);
+        //  TODO: If auto-update is allowed, update
+    }
 }
