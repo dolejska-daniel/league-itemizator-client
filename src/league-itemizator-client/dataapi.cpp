@@ -1,5 +1,6 @@
 #include "dataapi.h"
 #include <QtNetwork>
+#include <QVector>
 
 
 DataApi::DataApi()
@@ -35,17 +36,22 @@ QPair<int, QString> DataApi::GetCurrentProgramVersion()
     };
 }
 
-QByteArray DataApi::GetFile(QString name)
-{
-    auto data = MakeCall(CreateRequest("/data/" + name));
-    return QJsonDocument(data).toJson();
-}
-
 
 //======================================================================dd==
 //  DATA ENDPOINT
 //======================================================================dd==
 
+QJsonArray DataApi::GetFileList()
+{
+    auto data = MakeCall(CreateRequest("/src/league-itemizator-server/index.php", {{"f", "getFileList"}}));
+    return data.array();
+}
+
+QByteArray DataApi::GetFile(QUrl source)
+{
+    auto data = MakeCall(CreateRequest(source));
+    return data.toJson();
+}
 
 
 //======================================================================dd==
@@ -67,7 +73,12 @@ QNetworkRequest DataApi::CreateRequest(QString endpoint, std::map<QString, QStri
     return request;
 }
 
-QJsonObject DataApi::MakeCall(QNetworkRequest request)
+QNetworkRequest DataApi::CreateRequest(QUrl url)
+{
+    return QNetworkRequest(url);
+}
+
+QJsonDocument DataApi::MakeCall(QNetworkRequest request)
 {
     QNetworkReply *reply = _nam->get(request);
     while(!reply->isFinished())
@@ -76,5 +87,5 @@ QJsonObject DataApi::MakeCall(QNetworkRequest request)
     auto dataDocument = QJsonDocument::fromJson(reply->readAll());
     reply->deleteLater();
 
-    return dataDocument.object();
+    return dataDocument;
 }

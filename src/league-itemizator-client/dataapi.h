@@ -34,11 +34,17 @@ public:
     //======================================================================dd==
 
     /**
+     * @brief GetFileList
+     * @return array of file information
+     */
+    QJsonArray GetFileList();
+
+    /**
      * @brief GetFile
-     * @param name
+     * @param source
      * @return file data
      */
-    QByteArray GetFile(QString name);
+    QByteArray GetFile(QUrl source);
 
 
 protected:
@@ -60,10 +66,17 @@ protected:
     QNetworkRequest CreateRequest(QString endpoint, std::map<QString, QString> params = {});
 
     /**
+     * @brief CreateRequest
+     * @param target
+     * @return url request
+     */
+    QNetworkRequest CreateRequest(QUrl url);
+
+    /**
      * @brief MakeCall
      * @return parsed JSON reply
      */
-    QJsonObject MakeCall(QNetworkRequest request);
+    QJsonDocument MakeCall(QNetworkRequest request);
 
 
 };
