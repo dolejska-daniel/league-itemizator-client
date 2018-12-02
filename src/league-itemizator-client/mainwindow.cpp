@@ -79,9 +79,16 @@ MainWindow::MainWindow(QWidget *parent) :
     itemsets = new ItemsetApi(targetDir, api);
 
     //  Download current Data & App
-    //  TODO: Set timer to periodically call Update*();
     UpdateApp();
     UpdateData(false);
+
+    //  Periodically check for updates
+    auto updateInterval = new QTimer(this);
+    updateInterval->start(1000 * 60 * 60); // 1 hour
+    if (settings->value("data/auto-update", false).toBool())
+        connect(updateInterval, SIGNAL(timeout()), this, SLOT(UpdateData()));
+    if (settings->value("app/auto-update", false).toBool())
+        connect(updateInterval, SIGNAL(timeout()), this, SLOT(UpdateApp()));
 }
 
 MainWindow::~MainWindow()

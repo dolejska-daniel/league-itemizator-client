@@ -33,6 +33,7 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+
     //======================================================================dd==
     //  SETTINGS MODIFICATION FUNCTIONS
     //======================================================================dd==
