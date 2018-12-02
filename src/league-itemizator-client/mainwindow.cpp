@@ -24,7 +24,13 @@ MainWindow::MainWindow(QWidget *parent) :
     _settingsDialog(new SettingsDialog(settings, this))
 {
     setWindowFlags(Qt::Dialog);
+
     ui->setupUi(this);
+    CreateTrayIcon();
+    ShowTrayIcon();
+
+    //if (qApp->arguments().contains( "--startHidden" ));
+    //if (qApp->arguments().contains( "--forget" ));
 
     //  Change UI states according to saved settings
     ui->actionAutoUpdate_data->setChecked(settings->value("data/auto-updates", true).toBool());
@@ -95,6 +101,35 @@ MainWindow::~MainWindow()
 {
     delete settings;
     delete ui;
+}
+
+
+//======================================================================dd==
+//  SYSTEM TRAY FUNCTIONS
+//======================================================================dd==
+
+void MainWindow::CreateTrayIcon()
+{
+    _trayIcon = new QSystemTrayIcon(QIcon(":/icon.png"), this);
+
+    auto menu = new QMenu();
+    _trayIcon->setContextMenu(menu);
+
+    auto actionExit = new QAction("Exit");
+    menu->addAction(actionExit);
+    connect(actionExit, SIGNAL(triggered()), this, SLOT(Exit()));
+}
+
+void MainWindow::ShowTrayIcon()
+{
+    if (_trayIcon)
+        _trayIcon->show();
+}
+
+void MainWindow::HideTrayIcon()
+{
+    if (_trayIcon)
+        _trayIcon->hide();
 }
 
 
@@ -212,4 +247,9 @@ void MainWindow::UpdateApp()
         this->statusBar()->showMessage("Failed to process App update!", 5);
         return;
     }
+}
+
+void MainWindow::Exit()
+{
+    exit(0);
 }

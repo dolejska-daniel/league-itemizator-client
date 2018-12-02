@@ -7,6 +7,7 @@
 
 #include <QMainWindow>
 #include <QSettings>
+#include <QSystemTrayIcon>
 
 extern const int APP_VERSION;
 extern const QString APP_VERSION_STRING;
@@ -35,11 +36,39 @@ public:
 
 
     //======================================================================dd==
+    //  SYSTEM TRAY FUNCTIONS
+    //======================================================================dd==
+
+    /**
+     * @brief CreateTrayIcon
+     */
+    void CreateTrayIcon();
+
+    /**
+     * @brief ShowTrayIcon
+     */
+    void ShowTrayIcon();
+
+    /**
+     * @brief HideTrayIcon
+     */
+    void HideTrayIcon();
+
+
+    //======================================================================dd==
     //  SETTINGS MODIFICATION FUNCTIONS
     //======================================================================dd==
 
+    /**
+     * @brief SetDataVersion
+     * @param version
+     */
     void SetDataVersion( QPair<int, QString> const& version );
 
+    /**
+     * @brief SetAppVersion
+     * @param version
+     */
     void SetAppVersion( QPair<int, QString> const& version  );
 
 
@@ -47,8 +76,14 @@ public:
     //  UI MODIFICATION FUNCTIONS
     //======================================================================dd==
 
+    /**
+     * @brief DisplayDataVersion
+     */
     void DisplayDataVersion();
 
+    /**
+     * @brief DisplayAppVersion
+     */
     void DisplayAppVersion();
 
 
@@ -77,8 +112,14 @@ public slots:
      */
     void UpdateApp();
 
+    /**
+     * @brief Exit
+     */
+    void Exit();
+
 private:
     Ui::MainWindow *ui;
+    QSystemTrayIcon *_trayIcon;
 
     AboutDialog *_aboutDialog;
     SettingsDialog *_settingsDialog;
