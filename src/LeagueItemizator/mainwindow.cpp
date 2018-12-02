@@ -9,6 +9,7 @@
 #include <QDir>
 #include <QSysInfo>
 #include <QAction>
+#include <QCloseEvent>
 
 const int APP_VERSION = 1;
 const QString APP_VERSION_STRING = "v0.0.1";
@@ -24,10 +25,12 @@ MainWindow::MainWindow(QWidget *parent) :
     _settingsDialog(new SettingsDialog(settings, this))
 {
     setWindowFlags(Qt::Dialog);
+    setWindowIcon(QIcon(":/images/logo.ico"));
 
-    ui->setupUi(this);
     CreateTrayIcon();
     ShowTrayIcon();
+
+    ui->setupUi(this);
 
     //if (qApp->arguments().contains( "--startHidden" ));
     //if (qApp->arguments().contains( "--forget" ));
@@ -59,8 +62,8 @@ MainWindow::MainWindow(QWidget *parent) :
         //  Try to find the directory, prompt the user, ...
         this->statusBar()->showMessage("Searching for League...");
 
-        QSysInfo sys;
-        if (sys.windowsVersion() && leagueInstallDir.length())
+        if (QOperatingSystemVersion::currentType() == QOperatingSystemVersion::Windows
+            && leagueInstallDir.length())
         {
             //  Windows OS, trying to find it on my own
             //  TODO: fix registry path
@@ -80,6 +83,7 @@ MainWindow::MainWindow(QWidget *parent) :
         leagueInstallDir = QFileDialog::getExistingDirectory(this, "Open 'League of Legends' install directory");
     }
     //  Either correct directory was resolved or application has been closed
+    this->statusBar()->showMessage("League install dir found!", 5);
     settings->setValue("install-dir/league", leagueInstallDir);
 
     itemsets = new ItemsetApi(targetDir, api);
@@ -103,6 +107,20 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::closeEvent(QCloseEvent *e)
+{
+    if (settings->value("app/close-to-tray", false).toBool())
+    {
+        e->ignore();
+        this->hide();
+    }
+    else
+    {
+        //  TODO: Perform cleanup
+        _trayIcon->hide();
+    }
+}
+
 
 //======================================================================dd==
 //  SYSTEM TRAY FUNCTIONS
@@ -110,10 +128,15 @@ MainWindow::~MainWindow()
 
 void MainWindow::CreateTrayIcon()
 {
-    _trayIcon = new QSystemTrayIcon(QIcon(":/icon.png"), this);
+    _trayIcon = new QSystemTrayIcon(QIcon(":/images/logo.ico"), this);
 
     auto menu = new QMenu();
     _trayIcon->setContextMenu(menu);
+
+    auto actionToggleWindow = new QAction("Show/Hide");
+    menu->addAction(actionToggleWindow);
+    connect(actionToggleWindow, SIGNAL(triggered()), this, SLOT(ToggleVisibility()));
+    menu->addSeparator();
 
     auto actionExit = new QAction("Exit");
     menu->addAction(actionExit);
@@ -193,7 +216,9 @@ void MainWindow::UpdateData(bool force)
         }
         else
         {
-            qInfo() << "Data are outdated.";
+            if (force) qInfo() << "Data update forced.";
+            else qInfo() << "Data are outdated.";
+
             this->statusBar()->showMessage("Downloading new itemsets...");
             ui->label_data_upToDate->setText(noText);
 
@@ -247,6 +272,14 @@ void MainWindow::UpdateApp()
         this->statusBar()->showMessage("Failed to process App update!", 5);
         return;
     }
+}
+
+void MainWindow::ToggleVisibility()
+{
+    if (isVisible())
+        this->hide();
+    else
+        this->show();
 }
 
 void MainWindow::Exit()

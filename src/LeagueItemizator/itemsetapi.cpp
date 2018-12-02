@@ -16,6 +16,25 @@ void ItemsetApi::Save(QJsonArray files)
         SaveToFile(file["filename"].toString(), file["destination"].toString(), _api->GetFile(source));
         //  TODO: File fails to be created
     }
+
+    //  Find and open ItemSets config file
+    QFile config(_installDir.filePath("Config/ItemSets.json"));
+    if (!config.open(QIODevice::ReadWrite | QIODevice::Text))
+        //  TODO: Failed to open config
+        return;
+
+    //  Read and parse file
+    auto configData = config.readAll();
+    auto configObject = QJsonDocument::fromJson((configData)).object();
+    //  Update timestamp
+    QJsonValueRef timestamp = configObject.find("timestamp").value();
+    timestamp = QDateTime::currentMSecsSinceEpoch();
+    //  Save changes
+    if (config.write(QJsonDocument(configObject).toJson()) == -1)
+        //  TODO: Failed to write changes
+        return;
+
+    config.close();
 }
 
 void ItemsetApi::SaveToFile(QString filename, QString destination, QByteArray data)

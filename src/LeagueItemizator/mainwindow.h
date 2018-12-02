@@ -34,6 +34,8 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    void closeEvent(QCloseEvent *e);
+
 
     //======================================================================dd==
     //  SYSTEM TRAY FUNCTIONS
@@ -111,6 +113,11 @@ public slots:
      * @brief UpdateClient
      */
     void UpdateApp();
+
+    /**
+     * @brief ToggleVisibility
+     */
+    void ToggleVisibility();
 
     /**
      * @brief Exit

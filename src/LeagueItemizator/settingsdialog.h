@@ -17,6 +17,8 @@ public:
     explicit SettingsDialog(QSettings *settings, QWidget *parent = nullptr);
     ~SettingsDialog();
 
+    void accept();
+
 private:
     Ui::SettingsDialog *ui;
 
