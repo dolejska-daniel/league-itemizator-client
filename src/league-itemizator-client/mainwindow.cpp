@@ -23,10 +23,11 @@ MainWindow::MainWindow(QWidget *parent) :
     _aboutDialog(new AboutDialog(this)),
     _settingsDialog(new SettingsDialog(settings, this))
 {
+    setWindowFlags(Qt::Dialog);
     ui->setupUi(this);
 
     //  Change UI states according to saved settings
-    ui->actionAutoUpdate_data->setChecked(settings->value("data/auto-updates", false).toBool());
+    ui->actionAutoUpdate_data->setChecked(settings->value("data/auto-updates", true).toBool());
     ui->actionAutoUpdate_client->setChecked(settings->value("app/auto-updates", false).toBool());
     DisplayAppVersion();
     DisplayDataVersion();
@@ -94,15 +95,15 @@ MainWindow::~MainWindow()
 //  SETTINGS MODIFICATION FUNCTIONS
 //======================================================================dd==
 
-void MainWindow::SetDataVersion(QPair<int, QString> version)
+void MainWindow::SetDataVersion(QPair<int, QString> const& version)
 {
     settings->setValue("data/version", version.first);
     settings->setValue("data/version_string", version.second);
-    settings->setValue("data/updated_at", QDateTime().toString("yyyy-MM-dd hh:mm"));
+    settings->setValue("data/updated_at", QDateTime::currentDateTime().toString("yyyy-MM-dd"));
     DisplayDataVersion();
 }
 
-void MainWindow::SetAppVersion(QPair<int, QString> version)
+void MainWindow::SetAppVersion(QPair<int, QString> const& version)
 {
     //  TODO: ?
 }
@@ -115,12 +116,7 @@ void MainWindow::SetAppVersion(QPair<int, QString> version)
 void MainWindow::DisplayDataVersion()
 {
     ui->label_data_version->setText(settings->value("data/version_string", unknownText).toString());
-    auto lastUpdate = settings->value("data/updated_at", "").toString();
-    if (lastUpdate.length())
-    {
-        ui->label_data_lastUpdate->setText(lastUpdate);
-        ui->label_data_version->setText(settings->value("data/version_string").toString());
-    }
+    ui->label_data_lastUpdate->setText(settings->value("data/updated_at", unknownText).toString());
 }
 
 void MainWindow::DisplayAppVersion()
@@ -141,31 +137,40 @@ void MainWindow::AutoUpdateData(bool value)
 
 void MainWindow::UpdateData(bool force)
 {
-    this->statusBar()->showMessage("Fetching current Data version...");
-    auto version = api->GetCurrentDataVersion();
-    ui->label_data_versionLatest->setText(version.second);
-    if (settings->value("data/version", 0).toInt() == version.first && !force)
+    try
     {
-        qInfo() << "Data are up-to-date.";
-        ui->label_data_upToDate->setText(yesText);
-        this->statusBar()->showMessage("Data up-to-date!", 5);
-    }
-    else
-    {
-        qInfo() << "Data are outdated.";
-        this->statusBar()->showMessage("Downloading new itemsets...");
-        ui->label_data_upToDate->setText(noText);
+        this->statusBar()->showMessage("Fetching current Data version...");
+        auto version = api->GetCurrentDataVersion();
+        ui->label_data_versionLatest->setText(version.second);
+        if (settings->value("data/version", 0).toInt() == version.first && !force)
+        {
+            //  TODO: Validate files?
+            qInfo() << "Data are up-to-date." << version;
+            ui->label_data_upToDate->setText(yesText);
+            this->statusBar()->showMessage("Data up-to-date!", 5);
+        }
+        else
+        {
+            qInfo() << "Data are outdated.";
+            this->statusBar()->showMessage("Downloading new itemsets...");
+            ui->label_data_upToDate->setText(noText);
 
-        //  Get list of itemset files
-        auto files = api->GetFileList();
-        //  Remove old itemsets
-        itemsets->RemoveAll();
-        //  Save files
-        //  TODO: Display progress
-        itemsets->Save(files);
-        //  Update current Data version
-        SetDataVersion(version);
-        UpdateData(false);
+            //  Get list of itemset files
+            auto files = api->GetFileList();
+            //  Remove old itemsets
+            itemsets->RemoveAll();
+            //  Save files
+            //  TODO: Display progress
+            itemsets->Save(files);
+            //  Update current Data version
+            SetDataVersion(version);
+            UpdateData(false);
+        }
+    }
+    catch (QException)
+    {
+        this->statusBar()->showMessage("Failed to process Data update!", 5);
+        return;
     }
 }
 
@@ -176,20 +181,28 @@ void MainWindow::AutoUpdateApp(bool value)
 
 void MainWindow::UpdateApp()
 {
-    this->statusBar()->showMessage("Fetching current App version...");
-    auto version = api->GetCurrentProgramVersion();
-    ui->label_app_versionLatest->setText(version.second);
-    if (APP_VERSION == version.first)
+    try
     {
-        qInfo() << "App is up-to-date.";
-        ui->label_app_upToDate->setText(yesText);
-        this->statusBar()->showMessage("App up-to-date!", 5);
+        this->statusBar()->showMessage("Fetching current App version...");
+        auto version = api->GetCurrentProgramVersion();
+        ui->label_app_versionLatest->setText(version.second);
+        if (APP_VERSION == version.first)
+        {
+            qInfo() << "App is up-to-date." << version;
+            ui->label_app_upToDate->setText(yesText);
+            this->statusBar()->showMessage("App up-to-date!", 5);
+        }
+        else
+        {
+            qInfo() << "App is outdated.";
+            ui->label_app_upToDate->setText(noText);
+            this->statusBar()->showMessage("App update not is yet supported.", 8);
+            //  TODO: If auto-update is allowed, update
+        }
     }
-    else
+    catch (QException)
     {
-        qInfo() << "App is outdated.";
-        ui->label_app_upToDate->setText(noText);
-        this->statusBar()->showMessage("App update not is yet supported.", 8);
-        //  TODO: If auto-update is allowed, update
+        this->statusBar()->showMessage("Failed to process App update!", 5);
+        return;
     }
 }

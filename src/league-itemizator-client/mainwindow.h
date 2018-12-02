@@ -37,9 +37,9 @@ public:
     //  SETTINGS MODIFICATION FUNCTIONS
     //======================================================================dd==
 
-    void SetDataVersion( QPair<int, QString> version );
+    void SetDataVersion( QPair<int, QString> const& version );
 
-    void SetAppVersion( QPair<int, QString> version  );
+    void SetAppVersion( QPair<int, QString> const& version  );
 
 
     //======================================================================dd==

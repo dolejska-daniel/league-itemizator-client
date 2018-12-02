@@ -84,6 +84,12 @@ QJsonDocument DataApi::MakeCall(QNetworkRequest request)
     while(!reply->isFinished())
         qApp->processEvents();
 
+    if (reply->error() != QNetworkReply::NoError)
+    {
+        qWarning() << "Request error: " << reply->error();
+        throw QException{};
+    }
+
     auto dataDocument = QJsonDocument::fromJson(reply->readAll());
     reply->deleteLater();
 
